@@ -1,0 +1,107 @@
+/* src/App.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+header {
+  margin-bottom: 2rem;
+}
+
+h1 {
+  color: #005a9c;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.start-button,
+.stop-button {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.start-button {
+  background-color: #4CAF50;
+}
+
+.start-button:hover {
+  background-color: #45a049;
+}
+.start-button:disabled {
+  background-color: lightgray;
+  cursor: not-allowed;
+}
+
+.stop-button {
+  background-color: #f44336;
+}
+
+.stop-button:hover {
+  background-color: #da190b;
+}
+
+.status {
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-style: italic;
+  color: #666;
+}
+
+.content-area {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 1200px;
+  min-width: 1000px;
+}
+
+.transcription-pane,
+.note-pane {
+  width: 48%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+h2 {
+  color: #005a9c;
+  border-bottom: 2px solid #005a9c;
+  padding-bottom: 0.5rem;
+  margin-top: 0;
+}
+
+.transcription-text-box,
+.note-text-box {
+  min-height: 200px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
