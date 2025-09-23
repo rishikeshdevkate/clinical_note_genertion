@@ -35,7 +35,6 @@ function App() {
         console.log("Deepgram connection opened");
         setStatus("Recording...");
 
-        // Set up microphone audio stream
         navigator.mediaDevices
           .getUserMedia({ audio: true })
           .then((stream) => {
@@ -63,9 +62,13 @@ function App() {
       connection.on(LiveTranscriptionEvents.Transcript, (transcription) => {
         const transcript = transcription.channel.alternatives[0].transcript;
         if (transcript) {
-          setTranscription((prev) => prev + transcript + " ");
+          // If the result is final, append it to the full transcription and clear the current interim transcription
           if (transcription.is_final) {
             setFullTranscription((prev) => prev + transcript + " ");
+            setTranscription("");
+          } else {
+            // Update the current interim transcription to show live, in-progress text
+            setTranscription(transcript);
           }
         }
       });
@@ -96,7 +99,6 @@ function App() {
         .getTracks()
         .forEach((track) => track.stop());
       setIsRecording(false);
-
       setStatus("Stopping transcription...");
     }
 
@@ -104,13 +106,6 @@ function App() {
       deepgramClientRef.current.finish();
       deepgramClientRef.current = null;
     }
-
-    // Trigger note generation after Deepgram connection is finished
-    // setTimeout(() => {
-    //   if (fullTranscription) {
-    //     generateClinicalNote(fullTranscription);
-    //   }
-    // }, 1000); // Wait a moment for final transcript
   };
 
   const generateClinicalNote = async (text) => {
@@ -162,7 +157,9 @@ function App() {
           </button>
           <button
             onClick={() => generateClinicalNote(fullTranscription)}
-            disabled={isRecording || !transcription || generatingClinicalNote}
+            disabled={
+              isRecording || !fullTranscription || generatingClinicalNote
+            }
             className={"start-button"}
           >
             {generatingClinicalNote ? "Generating..." : "Generate Note"}
@@ -173,7 +170,10 @@ function App() {
           <div className="transcription-pane">
             <h2>Live Transcription</h2>
             <div className="transcription-text-box">
-              <p>{transcription}</p>
+              <p>
+                {fullTranscription}
+                {transcription}
+              </p>
             </div>
           </div>
 
@@ -181,7 +181,6 @@ function App() {
             <h2>Clinical Note</h2>
             <div className="note-text-box">
               <p>
-                {" "}
                 <ReactMarkdown>{clinicalNote}</ReactMarkdown>
               </p>
             </div>
